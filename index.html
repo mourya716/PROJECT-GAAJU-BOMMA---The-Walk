@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gajju Bomma | The Untold Story</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,700&family=Montserrat:wght@300;600&display=swap');
+
+        :root {
+            --bg: #050505;
+            --text: #e0e0e0;
+            --blood: #8a0b0b;
+            --gold: #FFD700;
+            --fear: #1a1a2e;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            cursor: none; /* We control the cursor */
+        }
+
+        /* CUSTOM CURSOR (The Soul) */
+        #cursor {
+            width: 20px;
+            height: 20px;
+            border: 2px solid white;
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s;
+            mix-blend-mode: difference;
+            box-shadow: 0 0 10px white;
+        }
+
+        /* SECTIONS */
+        section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            position: relative;
+            transition: background 1s ease;
+        }
+
+        h1, h2 {
+            font-family: 'Playfair Display', serif;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s ease;
+            max-width: 800px;
+        }
+
+        p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            max-width: 700px;
+            text-align: center;
+            margin-top: 20px;
+            opacity: 0;
+            color: #aaa;
+            transform: translateY(20px);
+            transition: all 1s ease 0.3s;
+        }
+
+        .visible { opacity: 1; transform: translateY(0); }
+
+        /* SCENE 1: THE BEAUTY (Gajju Bomma) */
+        #scene-beauty {
+            background: radial-gradient(circle, #1a0b14 0%, #000 100%);
+        }
+        .doll-glow {
+            font-size: 4rem;
+            background: linear-gradient(to right, #ff9966, #ff5e62);
+            -webkit-background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 30px rgba(255, 94, 98, 0.5);
+        }
+
+        /* SCENE 2: THE PAIN (The Red Days) */
+        #scene-pain {
+            background: #000;
+            position: relative;
+            overflow: hidden;
+        }
+        .pulse-bg {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, rgba(138, 11, 11, 0.4) 0%, transparent 70%);
+            opacity: 0;
+            animation: crampPulse 4s infinite;
+        }
+        @keyframes crampPulse {
+            0% { opacity: 0; transform: scale(1); }
+            10% { opacity: 0.8; transform: scale(1.1); } /* Sudden sharp pain */
+            40% { opacity: 0.2; transform: scale(1); }
+            100% { opacity: 0; }
+        }
+
+        /* SCENE 3: THE FEAR (The Walk Home) */
+        #scene-fear {
+            background: #020205;
+        }
+        .eyes {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.2);
+            font-size: 1.5rem;
+            transition: all 0.2s;
+        }
+
+        /* SCENE 4: THE REALIZATION (Men's Duty) */
+        #scene-realization {
+            background: linear-gradient(to bottom, #000, #111);
+        }
+
+        /* SCENE 5: THE PLEDGE */
+        #scene-pledge {
+            background: radial-gradient(circle at center, #222, #000);
+            text-align: center;
+        }
+
+        .btn-pledge {
+            margin-top: 40px;
+            padding: 20px 50px;
+            background: transparent;
+            border: 2px solid var(--gold);
+            color: var(--gold);
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: 0.5s;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn-pledge:hover {
+            background: var(--gold);
+            color: #000;
+            box-shadow: 0 0 50px var(--gold);
+        }
+
+        /* Scroll Prompt */
+        .scroll-down {
+            position: absolute;
+            bottom: 30px;
+            animation: bounce 2s infinite;
+            font-size: 0.8rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            opacity: 0.5;
+        }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(10px); } }
+
+        /* Interactive Text Highlight */
+        .highlight { color: white; font-weight: 600; }
+        .red-text { color: #ff4444; text-shadow: 0 0 10px #ff0000; }
+    </style>
+</head>
+<body>
+
+    <div id="cursor"></div>
+
+    <section id="scene-beauty">
+        <h1 class="doll-glow">She is a Gajju Bomma.</h1>
+        <p>Beautiful. Delicate. Full of life.<br>
+        She loves to smile, to wear nice clothes, to dream.<br>
+        But being a "Glass Doll" in a stone world is not easy.</p>
+        <div class="scroll-down">Scroll to feel her reality</div>
+    </section>
+
+    <section id="scene-pain">
+        <div class="pulse-bg"></div>
+        <h2>The Invisible War</h2>
+        <p>While she smiles at you in the office or college, <span class="red-text">a war is happening inside.</span><br>
+        Cramps that feel like twisting knives. Moods that storm without warning.<br>
+        She bears this pain silently, every month, for decades.<br>
+        <br>
+        <em style="font-size: 0.9rem; opacity: 0.7;">(Men, imagine your worst stomach ache, then having to work and smile through it.)</em></p>
+    </section>
+
+    <section id="scene-fear">
+        <h2 style="color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.5);">The Long Walk Home</h2>
+        <p>She wants to go out. She wants to be free.<br>
+        But freedom comes with a tax: <span class="highlight">The Gaze.</span><br>
+        Move your mouse... do you feel them watching?</p>
+        <div id="eyes-container"></div>
+    </section>
+
+    <section id="scene-realization">
+        <h2>To The Men</h2>
+        <p>We don't bleed. We don't fear walking alone at 2 AM.<br>
+        We have our own struggles—career, family pressure—yes.<br>
+        But we are the <span class="highlight">Guardians</span> of the Gajju Bomma.<br><br>
+        Safety isn't about restricting her freedom.<br>
+        Safety is creating a world where she doesn't need to be brave just to walk down the street.</p>
+    </section>
+
+    <section id="scene-pledge">
+        <h1 style="color: var(--gold);">The Promise</h1>
+        <p>If you are a man reading this: Promise to be a safe space.<br>
+        If you are a woman reading this: You are loved. You are strong.<br>
+        <br>
+        Let us make the world worthy of the Gajju Bomma.</p>
+        
+        <button class="btn-pledge" onclick="signPledge()">I Promise To Protect</button>
+        <p id="pledge-count" style="margin-top: 20px; font-size: 0.9rem; opacity: 0;">1,024,592 Guardians have signed.</p>
+    </section>
+
+    <script>
+        // --- CUSTOM CURSOR ---
+        const cursor = document.getElementById('cursor');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        // --- SCROLL ANIMATIONS ---
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const h = entry.target.querySelector('h1, h2');
+                    const p = entry.target.querySelector('p');
+                    if(h) h.classList.add('visible');
+                    if(p) p.classList.add('visible');
+
+                    // Special Effects Trigger
+                    if (entry.target.id === 'scene-fear') {
+                        startFearEffect();
+                    }
+                }
+            });
+        }, { threshold: 0.5 });
+
+        document.querySelectorAll('section').forEach(sec => {
+            observer.observe(sec);
+        });
+
+        // --- FEAR EFFECT (Scene 3) ---
+        // Creates eyes that follow the cursor to simulate being watched
+        const fearSection = document.getElementById('scene-fear');
+        const eyesContainer = document.getElementById('eyes-container');
+        let eyesCreated = false;
+
+        function startFearEffect() {
+            if (eyesCreated) return;
+            eyesCreated = true;
+
+            for(let i=0; i<30; i++) {
+                const eye = document.createElement('div');
+                eye.classList.add('eyes');
+                eye.innerText = '👁️';
+                eye.style.left = Math.random() * window.innerWidth + 'px';
+                eye.style.top = Math.random() * window.innerHeight + 'px';
+                eye.style.opacity = 0;
+                eyesContainer.appendChild(eye);
+
+                // Random blinking/appearing
+                setInterval(() => {
+                    eye.style.opacity = Math.random() > 0.7 ? 0.6 : 0;
+                }, 1000 + Math.random() * 2000);
+            }
+
+            document.addEventListener('mousemove', (e) => {
+                const eyes = document.querySelectorAll('.eyes');
+                eyes.forEach(eye => {
+                    const rect = eye.getBoundingClientRect();
+                    const dx = e.clientX - (rect.left + rect.width/2);
+                    const dy = e.clientY - (rect.top + rect.height/2);
+                    const angle = Math.atan2(dy, dx);
+                    eye.style.transform = `rotate(${angle}rad)`;
+                });
+            });
+        }
+
+        // --- PLEDGE FUNCTION ---
+        function signPledge() {
+            const btn = document.querySelector('.btn-pledge');
+            const count = document.getElementById('pledge-count');
+            
+            btn.innerText = "Accepted ✨";
+            btn.style.borderColor = "#fff";
+            btn.style.color = "#fff";
+            btn.disabled = true;
+
+            // Simulate immediate "Impact"
+            document.body.style.background = "white";
+            document.body.style.color = "black";
+            document.querySelectorAll('h1, h2, p').forEach(el => el.style.color = "#000");
+            
+            setTimeout(() => {
+                alert("Thank you. You are now a Guardian of the Gajju Bomma.");
+                count.style.opacity = 1;
+            }, 500);
+        }
+
+        // --- AUDIO EXPERIENCE (Visual Only) ---
+        // We simulate the heartbeat intensity in Scene 2
+        setInterval(() => {
+            const pulse = document.querySelector('.pulse-bg');
+            if(window.scrollY > window.innerHeight && window.scrollY < window.innerHeight * 2) {
+                // If in Scene 2, cursor pulses red
+                cursor.style.borderColor = 'red';
+                cursor.style.transform = 'scale(1.5)';
+                setTimeout(() => cursor.style.transform = 'scale(1)', 200);
+            } else {
+                cursor.style.borderColor = 'white';
+            }
+        }, 4000); // Every 4 seconds represents a cramp wave
+
+    </script>
+</body>
+</html>
