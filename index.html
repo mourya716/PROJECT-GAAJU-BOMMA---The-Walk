@@ -3,410 +3,321 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gajju Bomma: Alive</title>
+    <title>Gajju Bomma | The Complete Truth</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Outfit:wght@300;600&family=Playfair+Display:ital,wght@1,400&display=swap');
 
         :root {
-            --bg: #050508;
-            --soul-color: #00d2ff; /* Default Happy Color */
-            --soul-pain: #ff0044;  /* Red Mode Color */
-            --shadow: #1a1a1a;
-            --gold: #ffd700;
+            --bg: #0a0a0a;
+            --text: #f0f0f0;
+            --accent: #FFD700; /* Gold */
+            --period: #800000; /* Deep Red */
+            --night: #020205; /* Pitch Black */
+            --love: #ff69b4; /* Pink */
+            --hope: #00d2ff; /* Sky Blue */
         }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            margin: 0;
-            overflow: hidden;
-            background: var(--bg);
-            font-family: 'Montserrat', sans-serif;
-            color: white;
-            touch-action: none; /* For mobile interaction */
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Outfit', sans-serif;
+            overflow-x: hidden;
+            transition: background-color 1s ease;
         }
 
-        #world {
-            position: absolute;
+        /* PROGRESS BAR (Top) */
+        #progress {
+            position: fixed;
             top: 0; left: 0;
-            z-index: 1;
+            height: 5px;
+            background: var(--accent);
+            width: 0%;
+            z-index: 100;
+            transition: width 0.1s;
         }
 
-        /* HUD (Heads Up Display) */
-        #hud {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            z-index: 10;
-            pointer-events: none;
+        /* SECTIONS */
+        section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            text-align: center;
+            opacity: 0.2; /* Fade out inactive sections */
+            transition: opacity 1s, transform 1s;
+            transform: scale(0.9);
+        }
+
+        section.active {
+            opacity: 1;
+            transform: scale(1);
         }
 
         h1 {
-            font-family: 'Cinzel', serif;
+            font-family: 'Dancing Script', cursive;
+            font-size: 5rem;
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        }
+
+        h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        p {
             font-size: 1.5rem;
-            margin: 0;
-            background: linear-gradient(to right, #fff, var(--gold));
+            line-height: 1.8;
+            max-width: 800px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .highlight { font-weight: bold; color: var(--accent); }
+        
+        /* SCENE 1: THE PORTRAIT */
+        #scene-1 h1 {
+            background: linear-gradient(to right, #ff9966, #ff5e62);
             -webkit-background-clip: text;
             color: transparent;
-            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
         }
 
-        p.status {
-            font-size: 0.8rem;
-            opacity: 0.7;
-            margin-top: 5px;
+        /* SCENE 2: BIOLOGY (Red Pulse) */
+        .pulse-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, rgba(128, 0, 0, 0.4) 0%, transparent 70%);
+            animation: pulsePain 2s infinite;
+            display: none;
+        }
+        @keyframes pulsePain { 0% { opacity: 0.3; } 50% { opacity: 0.8; } 100% { opacity: 0.3; } }
+
+        /* SCENE 3: SAFETY (Flashlight effect) */
+        #scene-3 { cursor: none; }
+        .flashlight {
+            position: fixed;
+            top: 0; left: 0;
+            width: 300px; height: 300px;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(0,0,0,0.95) 70%);
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 50;
+            display: none;
         }
 
-        /* Controls */
-        #controls {
+        /* SCENE 4: EXPECTATIONS (Heavy Text) */
+        .heavy-word {
+            display: inline-block;
+            font-size: 1.2rem;
+            border: 1px solid #555;
+            padding: 5px 15px;
+            border-radius: 20px;
+            margin: 5px;
+            opacity: 0.6;
+        }
+
+        /* SCENE 5: LOVE & JOY (Floating Hearts) */
+        .heart {
+            position: absolute;
+            color: var(--love);
+            font-size: 20px;
+            animation: floatUp 4s linear infinite;
+        }
+        @keyframes floatUp { 0% { transform: translateY(100vh); opacity: 1; } 100% { transform: translateY(-10vh); opacity: 0; } }
+
+        /* SCENE 6: THE TRUTH */
+        .mirror-text {
+            font-size: 2rem;
+            color: var(--hope);
+            border-left: 4px solid var(--hope);
+            padding-left: 20px;
+        }
+
+        /* NAVIGATION HINT */
+        .scroll-hint {
             position: absolute;
             bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 10;
-            display: flex;
-            gap: 20px;
-        }
-
-        .btn-mode {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            color: white;
-            padding: 12px 24px;
-            border-radius: 50px;
-            cursor: pointer;
-            backdrop-filter: blur(10px);
-            font-family: 'Montserrat', sans-serif;
-            font-size: 0.9rem;
+            animation: bounce 2s infinite;
+            font-size: 1rem;
+            letter-spacing: 2px;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: all 0.3s ease;
         }
-
-        .btn-mode:hover { background: white; color: black; box-shadow: 0 0 20px white; }
-        
-        .btn-pain { border-color: #ff0044; color: #ffcccc; }
-        .btn-pain:hover { background: #ff0044; color: white; box-shadow: 0 0 30px #ff0044; }
-
-        .btn-night { border-color: #444; color: #aaa; }
-        .btn-night:hover { background: #333; color: white; box-shadow: 0 0 30px #000; }
-
-        /* Instructions Overlay */
-        #intro {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-            z-index: 20;
-            background: rgba(0,0,0,0.8);
-            padding: 40px;
-            border-radius: 20px;
-            border: 1px solid var(--gold);
-            animation: fadeOut 1s ease 5s forwards;
-            pointer-events: none;
-        }
-        
-        @keyframes fadeOut { 0% {opacity: 1;} 80% {opacity: 1;} 100% {opacity: 0; visibility: hidden;} }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(10px); } }
 
     </style>
 </head>
 <body>
 
-    <canvas id="world"></canvas>
+    <div id="progress"></div>
+    <div class="flashlight" id="torch"></div>
 
-    <div id="hud">
-        <h1>Gajju Bomma</h1>
-        <p class="status" id="status-text">State: Happy & Free</p>
-    </div>
+    <section id="scene-1" class="active">
+        <h1>She is a Gajju Bomma</h1>
+        <p>A "Glass Doll". Beautiful. Delicate. Precious.<br>
+        She brings color to your home. She is the laughter in the hallway.<br>
+        But do you truly know what the Glass Doll is made of?</p>
+        <div class="scroll-hint">Scroll Down To Understand Her</div>
+    </section>
 
-    <div id="intro">
-        <h2 style="font-family: 'Cinzel'; color: var(--gold);">Do not just watch.</h2>
-        <p>She is alive. She feels pain. She feels fear.</p>
-        <p><strong>Red Mode:</strong> Soothe her pain with your touch.</p>
-        <p><strong>Night Mode:</strong> Shield her from the shadows.</p>
-        <p style="margin-top:20px; font-size: 0.8rem; color: #888;">(Starting simulation...)</p>
-    </div>
+    <section id="scene-2" data-bg="#1a0000">
+        <div class="pulse-overlay" id="pain-pulse"></div>
+        <h2 style="color: #ff4d4d;">The Silent Storm</h2>
+        <p>Men, imagine your bones aching, your stomach twisting, and your energy draining...<br>
+        <span class="highlight">Now imagine you have to smile and work through it.</span></p>
+        <p>She doesn't ask for pity. She just asks for patience.<br>
+        When she is quiet, when she is tired—it's not attitude. It's battle.</p>
+    </section>
 
-    <div id="controls">
-        <button class="btn-mode btn-pain" onclick="togglePainMode()">Activate "Red Days"</button>
-        <button class="btn-mode btn-night" onclick="toggleNightMode()">Enter "The Night"</button>
-    </div>
+    <section id="scene-3" data-bg="#000000">
+        <h2 style="color: #aaa;">The Long Walk Home</h2>
+        <p>Why does she walk fast at night?<br>
+        Why does she check her phone constantly?<br>
+        Why does she clutch her keys like a weapon?</p>
+        <p class="highlight">Because the world has taught her that she is prey.</p>
+        <p style="font-size: 1rem; color: #666;">(Move your mouse... darkness surrounds her.)</p>
+    </section>
+
+    <section id="scene-4" data-bg="#0f0f15">
+        <h2 style="color: #ccc;">The Weight She Carries</h2>
+        <p>Society hands her a checklist before she is even born.</p>
+        <div style="margin-top: 20px;">
+            <span class="heavy-word">Be Pretty</span>
+            <span class="heavy-word">Be Quiet</span>
+            <span class="heavy-word">Be a Good Wife</span>
+            <span class="heavy-word">Don't Eat Too Much</span>
+            <span class="heavy-word">Cook Well</span>
+            <span class="heavy-word">Serve Guests</span>
+            <span class="heavy-word">Hide Your Pain</span>
+            <span class="heavy-word">Protect Family Honor</span>
+        </div>
+        <p style="margin-top: 30px;">She carries all this without dropping a single plate.</p>
+    </section>
+
+    <section id="scene-5" data-bg="#1a0510">
+        <div id="hearts-container"></div>
+        <h2 style="font-family: 'Dancing Script'; color: var(--love);">But She is Love</h2>
+        <p>Despite the pain, despite the fear... look at her.</p>
+        <p>She is the one who remembers birthdays.<br>
+        She is the one who senses when you are sad.<br>
+        She loves fiercely. She creates life. She builds homes out of empty walls.</p>
+    </section>
+
+    <section id="scene-6" data-bg="#001a1a">
+        <h2 style="color: var(--hope);">To The Men (Us)</h2>
+        <p class="mirror-text">
+            We don't need to "save" her.<br>
+            She is not weak. Surviving this world makes her stronger than us.<br>
+            <br>
+            We just need to be her <span class="highlight">Safe Place</span>.<br>
+            A place where she can put down the weight.<br>
+            A place where the Glass Doll doesn't need to worry about breaking.
+        </p>
+    </section>
+
+    <section id="scene-7" data-bg="#000">
+        <h1 style="color: var(--accent);">Respect the Gajju Bomma</h1>
+        <p>To every girl reading this: <span class="highlight">You are a Miracle.</span><br>
+        To every boy reading this: <span class="highlight">Be a Guardian.</span></p>
+        <br>
+        <p style="font-size: 1rem; opacity: 0.5;">A Tribute to Womanhood | By Mourya</p>
+    </section>
 
     <script>
-        /**
-         * THE ENGINE: "PRANA" (Life Force)
-         * Simulates emotion through physics.
-         */
-        const canvas = document.getElementById('world');
-        const ctx = canvas.getContext('2d');
-        const statusText = document.getElementById('status-text');
-
-        let width, height;
-        let mouse = { x: 0, y: 0 };
-        let isTouching = false; // Is the user touching/soothing?
+        // --- LOGIC ENGINE ---
         
-        // GAME STATES
-        let isPainMode = false; // "Red Days"
-        let isNightMode = false; // "Safety Threat"
-        let soulHealth = 100; // 0 = Shattered, 100 = Blooming
-
-        // THE SOUL (Gajju Bomma)
-        const soul = {
-            x: 0, y: 0,
-            radius: 60,
-            baseRadius: 60,
-            color: '#00d2ff',
-            vibration: 0,
-            pulseSpeed: 0.02
-        };
-
-        // PARTICLES (Emotions/Threats)
-        let particles = [];
-        let threats = [];
-
-        // INITIALIZATION
-        function resize() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-            soul.x = width / 2;
-            soul.y = height / 2;
-        }
-        window.addEventListener('resize', resize);
-        resize();
-
-        // MOUSE TRACKING
-        window.addEventListener('mousemove', e => {
-            mouse.x = e.clientX;
-            mouse.y = e.clientY;
-            checkInteraction();
-        });
-        window.addEventListener('touchmove', e => {
-            mouse.x = e.touches[0].clientX;
-            mouse.y = e.touches[0].clientY;
-            checkInteraction();
-        });
-
-        function checkInteraction() {
-            const dist = Math.hypot(mouse.x - soul.x, mouse.y - soul.y);
-            isTouching = dist < soul.radius + 50; // Near the soul
-        }
-
-        // --- MODES ---
+        const sections = document.querySelectorAll('section');
+        const progressBar = document.getElementById('progress');
+        const body = document.body;
         
-        function togglePainMode() {
-            isPainMode = !isPainMode;
-            isNightMode = false; // Reset other mode
-            updateState();
-        }
+        // Scene 2 Logic
+        const painPulse = document.getElementById('pain-pulse');
+        
+        // Scene 3 Logic
+        const torch = document.getElementById('torch');
+        const scene3 = document.getElementById('scene-3');
+        
+        // Scene 5 Logic
+        const heartsContainer = document.getElementById('hearts-container');
 
-        function toggleNightMode() {
-            isNightMode = !isNightMode;
-            isPainMode = false; // Reset other mode
-            updateState();
-        }
+        // Scroll Listener
+        window.addEventListener('scroll', () => {
+            const scrollPos = window.scrollY;
+            const windowHeight = window.innerHeight;
+            const docHeight = document.body.scrollHeight;
+            
+            // Update Progress
+            const percentage = (scrollPos / (docHeight - windowHeight)) * 100;
+            progressBar.style.width = percentage + "%";
 
-        function updateState() {
-            if (isPainMode) {
-                soul.color = '#ff0044'; // Red
-                soul.vibration = 10; // High vibration (Pain)
-                statusText.innerText = "State: The Red Days (She is in pain. Soothe her.)";
-                statusText.style.color = "#ffcccc";
-                document.body.style.background = "#1a0505"; // Dark Red BG
-            } else if (isNightMode) {
-                soul.color = '#ffffff'; // Vulnerable White
-                soul.vibration = 2; // Trembling fear
-                statusText.innerText = "State: The Walk Home (Protect her from Shadows!)";
-                statusText.style.color = "#ccc";
-                document.body.style.background = "#000000"; // Pitch Black
-            } else {
-                soul.color = '#00d2ff'; // Happy Blue
-                soul.vibration = 0;
-                statusText.innerText = "State: Happy & Free";
-                statusText.style.color = "#fff";
-                document.body.style.background = "#050508";
-                threats = []; // Clear threats
-            }
-        }
-
-        // --- CLASSES ---
-
-        class Particle {
-            constructor(x, y, type) {
-                this.x = x;
-                this.y = y;
-                this.type = type; // 'heal', 'flower'
-                this.size = Math.random() * 3 + 1;
-                this.vx = (Math.random() - 0.5) * 2;
-                this.vy = (Math.random() - 0.5) * 2;
-                this.life = 100;
-                this.hue = Math.random() * 50 + 200; // Blueish
-                if (type === 'flower') this.hue = Math.random() * 60 + 300; // Pink/Purple
-            }
-            update() {
-                this.x += this.vx;
-                this.y += this.vy;
-                this.life -= 1;
-                this.size *= 0.96;
-            }
-            draw() {
-                ctx.fillStyle = `hsla(${this.hue}, 100%, 70%, ${this.life/100})`;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI*2);
-                ctx.fill();
-            }
-        }
-
-        class Threat {
-            constructor() {
-                // Spawn from edges
-                const side = Math.floor(Math.random() * 4);
-                if(side === 0) { this.x = Math.random() * width; this.y = -20; }
-                if(side === 1) { this.x = width + 20; this.y = Math.random() * height; }
-                if(side === 2) { this.x = Math.random() * width; this.y = height + 20; }
-                if(side === 3) { this.x = -20; this.y = Math.random() * height; }
-
-                this.size = Math.random() * 5 + 5;
-                this.speed = Math.random() * 1.5 + 1;
-                this.angle = Math.atan2(soul.y - this.y, soul.x - this.x);
-                this.vx = Math.cos(this.angle) * this.speed;
-                this.vy = Math.sin(this.angle) * this.speed;
-                this.blocked = false;
-            }
-            update() {
-                if (this.blocked) {
-                    this.vx *= 0.9;
-                    this.vy *= 0.9;
-                    this.size *= 0.9;
-                    return; // Fade out
-                }
-
-                // Move towards soul
-                this.x += this.vx;
-                this.y += this.vy;
-
-                // Check collision with Shield (Mouse)
-                const distMouse = Math.hypot(this.x - mouse.x, this.y - mouse.y);
-                if (distMouse < 60) {
-                    this.blocked = true;
-                    this.vx = -this.vx * 2; // Bounce back
-                    this.vy = -this.vy * 2;
-                    createParticles(this.x, this.y, 'heal', 5); // Sparks
-                }
-
-                // Check collision with Soul
-                const distSoul = Math.hypot(this.x - soul.x, this.y - soul.y);
-                if (distSoul < soul.radius) {
-                    this.blocked = true;
-                    soulHealth -= 10;
-                    soul.vibration = 20; // Ouch
-                    createParticles(this.x, this.y, 'heal', 10);
-                    // Flash red
-                    document.body.style.backgroundColor = "red";
-                    setTimeout(() => document.body.style.backgroundColor = "#000", 50);
-                }
-            }
-            draw() {
-                ctx.fillStyle = this.blocked ? "#555" : "#fff";
-                ctx.beginPath();
-                // Draw as an "Eye" or "Spike"
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI*2);
-                ctx.fill();
+            // Check Active Section
+            sections.forEach(sec => {
+                const rect = sec.getBoundingClientRect();
+                const center = windowHeight / 2;
                 
-                if (!this.blocked) {
-                    ctx.strokeStyle = "red";
-                    ctx.lineWidth = 1;
-                    ctx.stroke();
-                }
-            }
-        }
+                // If section is in the middle of viewport
+                if (rect.top <= center && rect.bottom >= center) {
+                    sec.classList.add('active');
+                    
+                    // Change Background Color
+                    const newBg = sec.getAttribute('data-bg');
+                    if(newBg) body.style.backgroundColor = newBg;
 
-        function createParticles(x, y, type, count) {
-            for(let i=0; i<count; i++) particles.push(new Particle(x, y, type));
-        }
+                    // Trigger Scene Specifics
+                    if (sec.id === 'scene-2') {
+                        painPulse.style.display = 'block';
+                    } else {
+                        painPulse.style.display = 'none';
+                    }
 
-        // --- MAIN LOOP ---
+                    if (sec.id === 'scene-3') {
+                        torch.style.display = 'block';
+                    } else {
+                        torch.style.display = 'none';
+                    }
 
-        function loop() {
-            // Trail effect
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
-            ctx.fillRect(0, 0, width, height);
-
-            const time = Date.now() * 0.001;
-
-            // 1. UPDATE SOUL LOGIC
-            let shakeX = 0;
-            let shakeY = 0;
-
-            if (isPainMode) {
-                // Simulation: Pain makes her shake
-                if (isTouching) {
-                    // If user is soothing (touching), vibration reduces
-                    soul.vibration = Math.max(0, soul.vibration - 0.2);
-                    createParticles(mouse.x, mouse.y, 'heal', 1);
-                    // Reward mechanism: Flowers bloom if you soothe enough
-                    if (Math.random() > 0.9) createParticles(soul.x + (Math.random()-0.5)*100, soul.y + (Math.random()-0.5)*100, 'flower', 1);
+                    if (sec.id === 'scene-5') {
+                        createHearts();
+                    }
                 } else {
-                    soul.vibration = Math.min(15, soul.vibration + 0.1); // Pain returns if you leave
+                    sec.classList.remove('active');
                 }
-                
-                // Physics of shaking
-                shakeX = (Math.random() - 0.5) * soul.vibration;
-                shakeY = (Math.random() - 0.5) * soul.vibration;
-            }
-
-            if (isNightMode) {
-                // Spawner
-                if (Math.random() > 0.95) threats.push(new Threat());
-            }
-
-            // Draw Soul
-            const pulse = Math.sin(time * 2) * 5;
-            const currentRadius = soul.baseRadius + pulse;
-            
-            // Glow
-            const glow = ctx.createRadialGradient(soul.x + shakeX, soul.y + shakeY, currentRadius * 0.2, soul.x + shakeX, soul.y + shakeY, currentRadius * 3);
-            glow.addColorStop(0, soul.color);
-            glow.addColorStop(1, 'rgba(0,0,0,0)');
-            
-            ctx.fillStyle = glow;
-            ctx.beginPath();
-            ctx.arc(soul.x + shakeX, soul.y + shakeY, currentRadius * 3, 0, Math.PI*2);
-            ctx.fill();
-
-            // Core
-            ctx.fillStyle = 'white';
-            ctx.beginPath();
-            ctx.arc(soul.x + shakeX, soul.y + shakeY, currentRadius * 0.8, 0, Math.PI*2);
-            ctx.fill();
-
-            // 2. UPDATE ENTITIES
-            particles.forEach((p, index) => {
-                p.update();
-                p.draw();
-                if(p.life <= 0) particles.splice(index, 1);
             });
+        });
 
-            threats.forEach((t, index) => {
-                t.update();
-                t.draw();
-                if(t.size < 1) threats.splice(index, 1);
-            });
+        // Flashlight Interaction (Scene 3)
+        document.addEventListener('mousemove', (e) => {
+            torch.style.left = e.clientX + 'px';
+            torch.style.top = e.clientY + 'px';
+        });
 
-            // 3. DRAW CURSOR SHIELD (Only visible in Night Mode)
-            if (isNightMode) {
-                ctx.beginPath();
-                ctx.strokeStyle = "white";
-                ctx.lineWidth = 3;
-                ctx.arc(mouse.x, mouse.y, 40, 0, Math.PI*2);
-                ctx.stroke();
-                ctx.shadowBlur = 20;
-                ctx.shadowColor = "white";
-                ctx.stroke();
-                ctx.shadowBlur = 0;
-            }
+        // Heart Generator (Scene 5)
+        let heartsCreated = false;
+        function createHearts() {
+            if (heartsCreated) return;
+            heartsCreated = true;
+            
+            setInterval(() => {
+                // Only create if we are roughly in scene 5 position
+                const rect = document.getElementById('scene-5').getBoundingClientRect();
+                if (rect.top > window.innerHeight || rect.bottom < 0) return;
 
-            requestAnimationFrame(loop);
+                const heart = document.createElement('div');
+                heart.classList.add('heart');
+                heart.innerHTML = '❤️';
+                heart.style.left = Math.random() * 100 + "%";
+                heart.style.animationDuration = (Math.random() * 2 + 3) + "s"; // 3-5s float
+                heartsContainer.appendChild(heart);
+
+                setTimeout(() => {
+                    heart.remove();
+                }, 5000);
+            }, 300);
         }
-
-        loop();
 
     </script>
 </body>
