@@ -3,16 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gajju Bomma | The Eternal Journey</title>
+    <title>Gajju Bomma | The Untold Story</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Cinzel:wght@600&family=Montserrat:wght@300;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Outfit:wght@300;600&family=Playfair+Display:ital,wght@1,400&display=swap');
 
         :root {
-            --bg: #000;
-            --text: #fff;
-            --gold: #ffd700;
-            --heart: #ff4d6d;
-            --pain: #800000;
+            --bg: #050505;
+            --text: #f0f0f0;
+            --gold: #FFD700;
+            --red: #8a0000;
+            --night: #000;
+            --love: #ff69b4;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -20,339 +21,372 @@
         body {
             background-color: var(--bg);
             color: var(--text);
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Outfit', sans-serif;
             overflow-x: hidden;
-            overflow-y: scroll; /* Allow scrolling but we control flow */
+            transition: background 1.5s ease;
         }
 
-        /* FULLSCREEN SECTIONS */
+        /* SCROLL PROGRESS */
+        #progress-bar {
+            position: fixed;
+            top: 0; left: 0;
+            height: 4px;
+            background: var(--gold);
+            width: 0%;
+            z-index: 1000;
+            box-shadow: 0 0 10px var(--gold);
+        }
+
+        /* SECTIONS */
         section {
-            height: 100vh;
-            width: 100%;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            padding: 2rem;
             position: relative;
             text-align: center;
-            padding: 20px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 1s ease;
+        }
+
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         h1 {
             font-family: 'Dancing Script', cursive;
-            font-size: 4rem;
-            color: var(--gold);
-            text-shadow: 0 0 20px var(--gold);
-            opacity: 0;
-            animation: fadeIn 2s forwards;
+            font-size: 5rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
         }
 
         h2 {
-            font-family: 'Cinzel', serif;
-            font-size: 2.5rem;
-            margin-bottom: 20px;
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
         }
 
         p {
-            font-size: 1.2rem;
-            max-width: 600px;
-            line-height: 1.6;
-            color: #ccc;
+            font-size: 1.4rem;
+            line-height: 1.8;
+            max-width: 800px;
+            color: rgba(255, 255, 255, 0.8);
         }
 
-        .instruction {
-            margin-top: 30px;
-            font-size: 0.9rem;
-            color: var(--gold);
-            border: 1px solid var(--gold);
-            padding: 10px 20px;
-            border-radius: 30px;
-            animation: pulse 2s infinite;
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+        /* SCENE 1: INTRO */
+        #scene-1 h1 {
+            background: linear-gradient(to right, #ff9966, #ff5e62);
+            -webkit-background-clip: text;
+            color: transparent;
         }
 
-        /* --- STAGE 1: TEARS (Interaction: Wipe) --- */
-        #stage-tears { background: #050510; }
-        .tear {
+        /* SCENE 2: RED DAYS (Pulse Effect) */
+        .pulse-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, rgba(138, 0, 0, 0.3) 0%, transparent 80%);
+            animation: pulsePain 2s infinite;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 1s;
+            z-index: 50;
+        }
+        @keyframes pulsePain { 0% { transform: scale(1); opacity: 0.2; } 50% { transform: scale(1.1); opacity: 0.5; } 100% { transform: scale(1); opacity: 0.2; } }
+
+        /* SCENE 3: SAFETY (Flashlight) */
+        .flashlight-layer {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95);
+            pointer-events: none;
+            z-index: 60;
+            opacity: 0;
+            transition: opacity 1s;
+            /* The flashlight effect is done via mask-image in JS */
+        }
+        .flashlight-text { z-index: 61; position: relative; color: #fff; text-shadow: 0 0 10px #fff; }
+
+        /* SCENE 4: LOVE (Floating Hearts) */
+        .heart {
             position: absolute;
-            font-size: 2rem;
-            color: #00d2ff;
-            cursor: pointer;
-            animation: drop 3s infinite;
+            color: var(--love);
+            font-size: 1.5rem;
+            animation: floatUp 4s linear infinite;
+            opacity: 0;
         }
-        @keyframes drop { 0% {top: 30%; opacity: 0;} 50% {opacity: 1;} 100% {top: 80%; opacity: 0;} }
+        @keyframes floatUp { 0% { transform: translateY(100vh); opacity: 1; } 100% { transform: translateY(-10vh); opacity: 0; } }
 
-        /* --- STAGE 2: PAIN (Interaction: Soothe) --- */
-        #stage-pain { background: #1a0000; transition: background 1s; }
-        .pain-btn {
-            width: 100px; height: 100px;
-            background: radial-gradient(circle, red, darkred);
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 0 30px red;
-            transition: transform 0.2s;
-        }
-        .pain-btn:active { transform: scale(0.9); }
-
-        /* --- STAGE 3: THE ENDING (The Miracle) --- */
-        #stage-final {
+        /* SCENE 5: THE FINAL INTERACTION */
+        #scene-final {
             background: #000;
             overflow: hidden;
         }
 
-        /* THE MYSTERY BOX / SPHERE */
-        #mystery-sphere {
-            width: 150px;
-            height: 150px;
-            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.1), rgba(255,255,255,0.05) 60%, rgba(255,255,255,0));
-            border: 1px solid rgba(255,255,255,0.3);
+        #soul-crystal {
+            width: 120px;
+            height: 120px;
+            background: radial-gradient(circle, #fff, #00d2ff, #000);
             border-radius: 50%;
-            box-shadow: 0 0 20px rgba(255,255,255,0.1), inset 0 0 20px rgba(255,255,255,0.1);
-            position: relative;
+            box-shadow: 0 0 50px #00d2ff;
             cursor: pointer;
-            transition: all 0.5s ease;
+            transition: transform 0.3s;
+            animation: breathe 3s infinite ease-in-out;
+            z-index: 100;
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
         }
 
-        #mystery-sphere::after {
-            content: "Tap Me";
-            color: rgba(255,255,255,0.5);
+        #soul-crystal::after {
+            content: "Touch";
             font-size: 0.8rem;
+            color: #000;
+            font-weight: bold;
+            text-transform: uppercase;
             letter-spacing: 2px;
-            animation: float 2s infinite ease-in-out;
         }
 
-        #mystery-sphere:hover {
-            box-shadow: 0 0 50px var(--gold);
-            border-color: var(--gold);
-            transform: scale(1.1);
-        }
+        #soul-crystal:hover { transform: scale(1.2); box-shadow: 0 0 80px #00d2ff; }
+        
+        @keyframes breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
 
-        /* ANIMATIONS */
-        @keyframes fadeIn { to { opacity: 1; } }
-        @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
-
-        /* HIDDEN MESSAGE */
         #final-message {
             position: absolute;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
+            width: 100%;
             text-align: center;
             opacity: 0;
             pointer-events: none;
-            z-index: 10;
+            z-index: 200;
         }
-        
-        #final-message h1 { font-size: 3rem; color: #fff; text-shadow: 0 0 30px #fff; }
-        #final-message p { color: var(--gold); font-size: 1.5rem; }
 
-        /* Canvas for Particles */
+        #final-message h1 { font-size: 4rem; color: #fff; text-shadow: 0 0 40px #fff; }
+        #final-message p { font-size: 1.5rem; color: var(--gold); }
+
+        /* CANVAS FOR PARTICLES */
         #particle-canvas {
-            position: absolute;
+            position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
             pointer-events: none;
-            z-index: 5;
+            z-index: 150;
         }
 
     </style>
 </head>
 <body>
 
-    <section id="intro">
-        <h1>Gajju Bomma</h1>
-        <p>She is not just a doll.<br>She is a universe carried in glass.</p>
-        <div class="instruction">Scroll Down to Begin</div>
+    <div id="progress-bar"></div>
+    <div class="pulse-overlay" id="red-overlay"></div>
+    <div class="flashlight-layer" id="dark-overlay"></div>
+    <canvas id="particle-canvas"></canvas>
+
+    <section id="scene-1">
+        <h1>She is a Gajju Bomma</h1>
+        <p>A "Glass Doll".<br>Beautiful to look at. Precious to hold.<br>But do you know the cost of being made of glass?</p>
+        <p style="font-size: 0.9rem; margin-top: 50px; opacity: 0.6; animation: bounce 2s infinite;">SCROLL DOWN SLOWLY</p>
     </section>
 
-    <section id="stage-tears">
-        <h2>Sometimes She Cries in Silence</h2>
-        <p>She hides her tears so she doesn't worry you.<br>Can you wipe them away?</p>
-        <div class="instruction" id="wipe-hint">Click the tears to wipe them</div>
-        
-        <div id="tears-container"></div>
+    <section id="scene-2" data-color="#1a0505">
+        <h2 style="color: #ff4d4d;">The Red Days</h2>
+        <p>Imagine a storm inside your body.<br>Pain that twists your insides. Energy that drains away.</p>
+        <p>She smiles through this pain every single month.<br>Not because it doesn't hurt, but because the world expects her to work.</p>
     </section>
 
-    <section id="stage-pain">
-        <h2 style="color: #ffcccc;">The Invisible Pain</h2>
-        <p>The "Red Days" are heavy. She needs comfort, not judgment.</p>
-        <div class="pain-btn" id="pain-btn" onclick="soothePain()">
-            <span style="font-size: 2rem;">❤️</span>
+    <section id="scene-3" data-color="#000">
+        <div class="flashlight-text">
+            <h2>The Long Walk Home</h2>
+            <p>Why does she look over her shoulder?</p>
+            <p>Why does she clutch her keys like a weapon?</p>
+            <p><strong>Move your mouse...</strong> darkness is everywhere.</p>
         </div>
-        <p style="margin-top: 10px; font-size: 0.9rem;">Click the heart repeatedly to soothe her.</p>
     </section>
 
-    <section id="stage-final">
-        <canvas id="particle-canvas"></canvas>
-        
-        <div id="sphere-container">
-            <h2>The Soul of the Gajju Bomma</h2>
-            <p style="margin-bottom: 30px;">You have seen her pain. You have seen her tears.<br>Now, unlock her true power.</p>
-            
-            <div style="display: flex; justify-content: center;">
-                <div id="mystery-sphere" onclick="explodeSphere()"></div>
-            </div>
+    <section id="scene-4" data-color="#100510">
+        <div id="hearts-container"></div>
+        <h2 style="font-family: 'Dancing Script'; color: var(--love);">But She is Love</h2>
+        <p>Despite the pain. Despite the fear.</p>
+        <p>She is the one who remembers your favorite food.<br>She is the one who builds a home out of empty walls.<br>She is Life itself.</p>
+    </section>
+
+    <section id="scene-final" data-color="#000">
+        <div id="pre-click-content">
+            <h2>The Final Truth</h2>
+            <p style="margin-bottom: 40px;">She doesn't need a savior. She needs a safe world.</p>
+            <div id="soul-crystal" onclick="igniteSoul()"></div>
         </div>
 
         <div id="final-message">
-            <h1>She is Life.</h1>
-            <p>Treat her with love, and she will make your world bloom.</p>
+            <h1>You Are The Guardian.</h1>
+            <p>Protect the Gajju Bomma. Respect Her. Love Her.</p>
             <br>
-            <p style="font-size: 0.8rem; color: #555;">Created by Mourya for the World</p>
+            <p style="font-size: 0.8rem; opacity: 0.5;">Created by Mourya</p>
         </div>
     </section>
 
     <script>
-        // --- INTERACTIVE LOGIC ---
-
-        // 1. TEAR LOGIC
-        const tearsContainer = document.getElementById('tears-container');
-        const wipeHint = document.getElementById('wipe-hint');
-        let tearsWiped = 0;
-
-        function createTears() {
-            for(let i=0; i<5; i++) {
-                const tear = document.createElement('div');
-                tear.classList.add('tear');
-                tear.innerHTML = '💧';
-                tear.style.left = (40 + Math.random() * 20) + '%';
-                tear.style.animationDelay = Math.random() + 's';
-                
-                tear.onclick = function() {
-                    this.style.opacity = '0';
-                    this.style.transform = 'scale(2)'; // Poof effect
-                    setTimeout(() => this.remove(), 200);
-                    tearsWiped++;
-                    if(tearsWiped >= 5) {
-                        wipeHint.innerText = "Thank you. She is smiling now. Scroll Down.";
-                        wipeHint.style.borderColor = "#00d2ff";
-                        wipeHint.style.color = "#00d2ff";
-                    }
-                };
-                tearsContainer.appendChild(tear);
-            }
-        }
-        createTears();
-
-        // 2. PAIN LOGIC
-        let sootheCount = 0;
-        function soothePain() {
-            sootheCount++;
-            const btn = document.getElementById('pain-btn');
-            const bg = document.getElementById('stage-pain');
-            
-            // Visual feedback
-            btn.style.transform = `scale(${1 - sootheCount*0.05})`;
-            
-            if (sootheCount >= 5) {
-                bg.style.background = "#2a0a10"; // Calmer color
-                btn.innerHTML = "✨";
-                btn.style.background = "white";
-                btn.style.boxShadow = "0 0 30px white";
-                btn.style.transform = "scale(1)";
-                document.querySelector('#stage-pain h2').innerText = "You Healed Her.";
-                document.querySelector('#stage-pain h2').style.color = "white";
-                document.querySelector('#stage-pain p').innerText = "Your patience is her medicine. Scroll Down.";
-            }
-        }
-
-        // 3. EXPLOSION LOGIC (The Climax)
+        // --- SCROLL & LOGIC ENGINE ---
+        const sections = document.querySelectorAll('section');
+        const progressBar = document.getElementById('progress-bar');
+        const redOverlay = document.getElementById('red-overlay');
+        const darkOverlay = document.getElementById('dark-overlay');
         const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        
+        let width = window.innerWidth;
+        let height = window.innerHeight;
+        canvas.width = width;
+        canvas.height = height;
 
+        // SCROLL OBSERVER
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    
+                    // Background Color Change
+                    const color = entry.target.getAttribute('data-color');
+                    if(color) document.body.style.backgroundColor = color;
+
+                    // Scene Specific Triggers
+                    if(entry.target.id === 'scene-2') {
+                        redOverlay.style.opacity = 1;
+                    } else {
+                        redOverlay.style.opacity = 0;
+                    }
+
+                    if(entry.target.id === 'scene-3') {
+                        darkOverlay.style.opacity = 1;
+                        document.addEventListener('mousemove', moveFlashlight);
+                    } else {
+                        darkOverlay.style.opacity = 0;
+                        document.removeEventListener('mousemove', moveFlashlight);
+                    }
+
+                    if(entry.target.id === 'scene-4') {
+                        startHearts();
+                    }
+                }
+            });
+        }, { threshold: 0.5 });
+
+        sections.forEach(sec => observer.observe(sec));
+
+        // SCROLL PROGRESS
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.scrollY;
+            const docHeight = document.body.scrollHeight - window.innerHeight;
+            const scrollPercent = (scrollTop / docHeight) * 100;
+            progressBar.style.width = scrollPercent + '%';
+        });
+
+        // FLASHLIGHT LOGIC (Scene 3)
+        function moveFlashlight(e) {
+            const x = e.clientX;
+            const y = e.clientY;
+            darkOverlay.style.background = `radial-gradient(circle at ${x}px ${y}px, transparent 100px, rgba(0,0,0,0.98) 300px)`;
+        }
+
+        // HEART LOGIC (Scene 4)
+        function startHearts() {
+            const container = document.getElementById('hearts-container');
+            if(container.children.length > 0) return; // Already started
+
+            setInterval(() => {
+                const rect = document.getElementById('scene-4').getBoundingClientRect();
+                if(rect.top > window.innerHeight || rect.bottom < 0) return;
+
+                const h = document.createElement('div');
+                h.classList.add('heart');
+                h.innerHTML = '❤️';
+                h.style.left = Math.random() * 90 + 5 + '%';
+                h.style.animationDuration = Math.random() * 3 + 3 + 's';
+                container.appendChild(h);
+                setTimeout(() => h.remove(), 6000);
+            }, 300);
+        }
+
+        // --- THE SPECIAL ENDING (PARTICLES) ---
         let particles = [];
-        let animationId;
+        let ignited = false;
 
-        function explodeSphere() {
-            const sphere = document.getElementById('mystery-sphere');
-            const container = document.getElementById('sphere-container');
-            const message = document.getElementById('final-message');
+        function igniteSoul() {
+            if(ignited) return;
+            ignited = true;
 
-            // Hide the sphere
-            sphere.style.transform = "scale(0)";
-            sphere.style.opacity = "0";
-            
-            // Fade out container text
-            container.style.transition = "opacity 1s";
-            container.style.opacity = "0";
+            const crystal = document.getElementById('soul-crystal');
+            const preContent = document.getElementById('pre-click-content');
+            const finalMsg = document.getElementById('final-message');
 
-            // Trigger Particles
-            createExplosion(window.innerWidth/2, window.innerHeight/2);
+            // 1. Hide the button/text
+            preContent.style.transition = "opacity 1s";
+            preContent.style.opacity = 0;
+            setTimeout(() => preContent.style.display = 'none', 1000);
+
+            // 2. Explosion Logic
+            const rect = crystal.getBoundingClientRect();
+            const centerX = rect.left + rect.width/2;
+            const centerY = rect.top + rect.height/2;
+
+            createExplosion(centerX, centerY);
             animateParticles();
 
-            // Show Message
+            // 3. Show Message
             setTimeout(() => {
-                message.style.opacity = "1";
-                message.style.transition = "opacity 2s ease";
-                // Flash background
-                document.getElementById('stage-final').style.background = "#fff";
-                setTimeout(() => {
-                    document.getElementById('stage-final').style.background = "#000";
-                    document.getElementById('stage-final').style.transition = "background 3s";
-                }, 100);
+                finalMsg.style.opacity = 1;
+                finalMsg.style.transition = "opacity 2s ease";
+                // Flash white
+                document.body.style.backgroundColor = "white";
+                setTimeout(() => document.body.style.backgroundColor = "black", 100);
             }, 500);
         }
 
         function createExplosion(x, y) {
-            const particleCount = 300;
-            for (let i = 0; i < particleCount; i++) {
+            for(let i=0; i<400; i++) {
                 particles.push({
                     x: x,
                     y: y,
-                    vx: (Math.random() - 0.5) * 20,
-                    vy: (Math.random() - 0.5) * 20,
-                    size: Math.random() * 5 + 2,
-                    color: `hsl(${Math.random() * 360}, 100%, 50%)`,
-                    life: 100,
-                    type: Math.random() > 0.5 ? 'circle' : 'heart' // Mix of shapes
+                    vx: (Math.random() - 0.5) * 15,
+                    vy: (Math.random() - 0.5) * 15,
+                    life: Math.random() * 100 + 50,
+                    color: `hsl(${Math.random() * 60 + 180}, 100%, 70%)`, // Blues and Cyans
+                    size: Math.random() * 4 + 1
                 });
             }
         }
 
         function animateParticles() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.clearRect(0, 0, width, height);
             
-            particles.forEach((p, index) => {
+            particles.forEach((p, i) => {
                 p.x += p.vx;
                 p.y += p.vy;
-                p.vy += 0.2; // Gravity
-                p.vx *= 0.96; // Friction
-                p.vy *= 0.96;
+                p.vx *= 0.95; // Friction
+                p.vy *= 0.95;
                 p.life--;
-
+                
                 ctx.fillStyle = p.color;
+                ctx.globalAlpha = p.life / 100;
                 ctx.beginPath();
-                
-                if (p.type === 'circle') {
-                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-                } else {
-                    // Simple square acting as confetti
-                    ctx.rect(p.x, p.y, p.size, p.size);
-                }
-                
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI*2);
                 ctx.fill();
 
-                if (p.life <= 0) particles.splice(index, 1);
+                if(p.life <= 0) particles.splice(i, 1);
             });
 
-            if (particles.length > 0) {
-                requestAnimationFrame(animateParticles);
-            }
+            if(particles.length > 0) requestAnimationFrame(animateParticles);
         }
 
-        // Resize handler
         window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
         });
 
     </script>
